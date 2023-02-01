@@ -1,0 +1,43 @@
+# Dependency directories
+node_modules/
+
+# stop npm install from messing up
+package-lock.json
+
+# Webpack directory
+.webpack
+
+# Build directory
+.build
+
+# Serverless directories
+.serverless/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Terraform
+infra/.terraform/
+
+# jest test coverage
+coverage/
+
+# Local environment variables
+.env
+
+.idea/
+*.iml
+
+dist/
+layer.zip
+source.zip
+/tmp
+.dynamodb
+.terraform.lock.hcl
+
+.vscode/
+.DS_Store
