@@ -12,28 +12,21 @@ const dynamoDB = new DynamoDB({
 
 describe('fromSortKey', () => {
   it('should return object', async () => {
-    await dynamoDB
-      .putItem({
-        TableName: 'table',
-        Item: {
-          HashKey: { S: 'hash_key' },
-          RangeKey: { S: 'range_key' },
-          IndexKey: { S: 'index_key' },
-        },
-      })
-      .promise();
+    const tObject: T = {
+      HashKey: 'hash_key',
+      RangeKey: 'range_key',
+      IndexKey: 'index_key',
+    };
 
     const table = tableBuilder<T>('table')
       .withKey<'HashKey', 'RangeKey'>('HashKey', 'RangeKey')
       .withGlobalIndex('Gsi', 'IndexKey', 'RangeKey')
       .build({ client: dynamoDB });
-    const res = table.indexes.Gsi.query('index_key', { fromSortKey: 'range_key' });
 
-    const expected = {
-      HashKey: 'hash_key',
-      RangeKey: 'range_key',
-      IndexKey: 'index_key',
-    };
-    expect(res).toBe([expected]);
+    await table.put(tObject);
+
+    const res = await table.indexes.Gsi.query('index_key', { fromSortKey: 'range_key' });
+
+    expect(res.records).toStrictEqual([tObject]);
   });
 });
